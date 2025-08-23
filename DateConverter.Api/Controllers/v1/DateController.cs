@@ -1,4 +1,5 @@
-﻿using DateConverter.Models;
+﻿using DateConverter.Domain.Queries.v1.Dates.Converter;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DateConverter.Api.Controllers.v1;
@@ -7,16 +8,24 @@ namespace DateConverter.Api.Controllers.v1;
 [Route("api/v1/dates")]
 public sealed class DateController : ControllerBase
 {
-    [HttpPost("convert/{day:int}")]
-    public IActionResult ConvertDate(int day)
+    private readonly IMediator _mediator;
+
+    public DateController(IMediator mediator)
     {
-        var dateFactory = DateFactory.Create(day);
+        _mediator = mediator;
+    }
 
-        var date = dateFactory.IsTurnedMonth()
-            ? dateFactory.GetDateWithTurnOfMounth()
-            : dateFactory.GetDate();
+    [HttpPost("convert/{day:int}")]
+    public async Task<IActionResult> ConvertDateAsync(int day, CancellationToken cancellationToken)
+    {
+        var query = new DateConverterQuery
+        {
+            Day = day
+        };
 
-        return Ok(date);
+        var response = await _mediator.Send(query, cancellationToken);
+
+        return Ok(response);
     }
 
     [HttpGet("currentDate")]
