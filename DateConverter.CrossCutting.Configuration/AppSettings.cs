@@ -1,8 +1,4 @@
-﻿using DateConverter.CrossCutting.Configuration.Settings;
-using Microsoft.Extensions.Configuration;
-using System.Text.Json.Serialization;
-
-namespace DateConverter.CrossCutting.Configuration;
+﻿namespace DateConverter.CrossCutting.Configuration;
 
 public class AppSettings
 {

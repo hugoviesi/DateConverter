@@ -1,6 +1,3 @@
-using DateConverter.Domain.Queries.v1.Dates.Converter;
-using MediatR;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();

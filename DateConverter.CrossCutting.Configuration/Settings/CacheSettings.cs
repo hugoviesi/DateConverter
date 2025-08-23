@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DateConverter.CrossCutting.Configuration.Settings;
+﻿namespace DateConverter.CrossCutting.Configuration.Settings;
 
 public sealed record CacheSettings
 {

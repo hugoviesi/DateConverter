@@ -1,8 +1,4 @@
-﻿using DateConverter.Domain.Queries.v1.Dates.Converter;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-namespace DateConverter.Api.Controllers.v1;
+﻿namespace DateConverter.Api.Controllers.v1;
 
 [ApiController]
 [Route("api/v1/dates")]
