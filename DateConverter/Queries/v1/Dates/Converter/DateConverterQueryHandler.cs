@@ -1,10 +1,4 @@
-﻿using DateConverter.CrossCutting.Configuration;
-using DateConverter.Models;
-using MediatR;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
-
-namespace DateConverter.Domain.Queries.v1.Dates.Converter;
+﻿namespace DateConverter.Domain.Queries.v1.Dates.Converter;
 
 public sealed class DateConverterQueryHandler : IRequestHandler<DateConverterQuery, DateConverterQueryResponse>
 {

@@ -1,4 +1,4 @@
-﻿namespace DateConverter.Models;
+﻿namespace DateConverter.Domain.Models;
 
 public class DateFactory
 {

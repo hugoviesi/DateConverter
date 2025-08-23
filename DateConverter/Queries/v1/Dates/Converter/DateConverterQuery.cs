@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace DateConverter.Domain.Queries.v1.Dates.Converter;
+﻿namespace DateConverter.Domain.Queries.v1.Dates.Converter;
 
 public sealed record DateConverterQuery : IRequest<DateConverterQueryResponse>
 {
