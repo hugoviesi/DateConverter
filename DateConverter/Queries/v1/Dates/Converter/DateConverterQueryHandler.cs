@@ -1,17 +1,11 @@
 ﻿namespace DateConverter.Domain.Queries.v1.Dates.Converter;
 
-public sealed class DateConverterQueryHandler : IRequestHandler<DateConverterQuery, DateConverterQueryResponse>
+public sealed class DateConverterQueryHandler(IMemoryCache memoryCache, ILoggerFactory loggerFactory) : IRequestHandler<DateConverterQuery, DateConverterQueryResponse>
 {
-    private readonly IMemoryCache _memoryCache;
-    private readonly ILogger _logger;
+    private readonly IMemoryCache _memoryCache = memoryCache;
+    private readonly ILogger _logger = loggerFactory.CreateLogger<DateConverterQueryHandler>();
 
     private readonly AppSettings _appSettings = new();
-
-    public DateConverterQueryHandler(IMemoryCache memoryCache, ILoggerFactory loggerFactory)
-    {
-        _memoryCache = memoryCache;
-        _logger = loggerFactory.CreateLogger<DateConverterQueryHandler>();
-    }
 
     public async Task<DateConverterQueryResponse> Handle(DateConverterQuery request, CancellationToken cancellationToken)
     {
@@ -31,11 +25,9 @@ public sealed class DateConverterQueryHandler : IRequestHandler<DateConverterQue
 
         _logger.LogInformation("Cache miss for key: {CacheKey}. Computing date... | {CorrelationId}", cacheKey, correlationId);
 
-        var dateFactory = DateFactory.Create(request.Day);
-
-        var date = dateFactory.IsTurnedMonth()
-            ? dateFactory.GetDateWithTurnOfMounth()
-            : dateFactory.GetDate();
+        var date = DateFactory
+            .WithDay(request.Day)
+            .GetCalculatedDate();
 
         var cacheEntryOptions = new MemoryCacheEntryOptions
         {
@@ -45,11 +37,13 @@ public sealed class DateConverterQueryHandler : IRequestHandler<DateConverterQue
 
         _memoryCache.Set(cacheKey, date, cacheEntryOptions);
 
-        _logger.LogInformation("Date computed and cached for key: {CacheKey} | {CorrelationId}", cacheKey, correlationId);   
+        _logger.LogInformation("Date computed and cached for key: {CacheKey} | {CorrelationId}", cacheKey, correlationId);
 
-        return new DateConverterQueryResponse
+        var result = new DateConverterQueryResponse
         {
             Date = date
         };
+
+        return await Task.FromResult(result);
     }
 }
